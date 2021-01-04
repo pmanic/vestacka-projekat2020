@@ -206,8 +206,79 @@
 ;(trace stampaj_listu)
 ;(stampa (prikaziTablu tablaa 4) 4)
 
-(novaIgra '4 'O)
 
+;----------------------------------------------------------------------------------------------------------------------------------------
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;----------------------------------------------------------POVLACENJE POTEZA----------------------------------------------------------------
+
+(defun vratiElement(element ubacenElement)
+    (cond
+    ((eq element '-) (cond (ubacenElement '-) (T napotezu)))
+    (T element)
+    )
+)
+
+
+(defun ubaciNaStapic(stapic ubacenElement)
+    	;(cond
+		;( (eq (car stapic) '-) napotezu)
+		;( T (cons (ispuniStub el n) (ispuniJedanRed el n (1- brojac) )) )		
+	;)
+
+    (cond 
+    ((null stapic) '())
+    ((eq (car stapic) '-) ( cons (vratiElement (car stapic) ubacenElement ) (ubaciNaStapic (cdr stapic) 1 ) ))
+    ( T ( cons (vratiElement (car stapic) ubacenElement ) (ubaciNaStapic (cdr stapic) '() ) ) )
+    )
+)
+
+(defun nadjiStapic (vrsta brojac)
+    (cond
+    ((null vrsta) '())
+    ((= brojac 0) (cons ( ubaciNaStapic (car vrsta) '()) ( nadjiStapic (cdr vrsta) (1- brojac)) ) )
+    ( T (cons (car vrsta) (nadjiStapic (cdr vrsta) (1- brojac)) ))
+    )
+)
+
+(defun nadjiVrstu (tabela brojacX brojacY)
+     (cond
+    ((null tabela) '())
+    ((= brojacX 0) (cons ( nadjiStapic (car tabela) brojacY) ( nadjiVrstu (cdr tabela) (1- brojacX) brojacY) ) )
+    ( T (cons (car tabela) (nadjiVrstu (cdr tabela) (1- brojacX) brojacY) ))
+    )
+)
+
+(defun konvertujUKoordinate (broj)
+    (list (floor broj dimTable) (mod broj dimTable))
+)
+
+
+(defun konvertujPotez (potez)
+    (konvertujUKoordinate (izvuciBroj(assoc potez brojevi)))
+)
+
+(defun povuciPotez (potez)
+    (cond 
+        ((atom potez) (nadjiVrstu tabla (car (konvertujPotez potez)) (car (cdr (konvertujPotez potez)))))
+        (T (nadjiVrstu tabla (car potez ) (car (cdr potez))))
+    )
+)
+
+(novaIgra '4 'O)
+(princ tabla)
+(setq tabla (povuciPotez '(0 0)))
+(princ tabla)
+(princ (atom '1))
+(princ (konvertujPotez '1))
+(princ (floor 1 dimTable))
+(princ (mod 1 dimTable))
+(princ (list 0 1 ))
+(setq tabla (povuciPotez '1))
+(princ tabla)
+(setq tabla (povuciPotez 'C))
+(princ tabla)
 
 
 
