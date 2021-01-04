@@ -109,23 +109,26 @@
 (defun vratielemente(lista brojac)
     (cond
         ((= brojac 0) '())
-        (t (cons (caar lista) (vratielemente (cdr lista) (1- brojac))))
+        (t (reverse (cons (caar lista) (reverse (vratielemente (cdr lista) (1- brojac))))))
     )
 )
 
-(defun prikaziTablu(lista brojac)
+(defun prikaziTablu(lista brojac &optional(p 1))
     (cond
-        ((null lista) '())
+        ((= brojac 0) '())
+        ((= p brojac) (append  (vratiRed lista p) (prikaziTablu (brisiIzSvakogReda lista p) (1- brojac) (1- p))))
         ; (T (cons (caar (cdddar lista))(prikaziTablu (cdr lista))))
-        (T (cons (append (list (append  (reverse (cdr (reverse (car lista)))) (list (cdr (car (reverse (car lista))))))) (prikaziTablu (cdr lista)))))
+        ;(T (cons (append (list (append  (reverse (cdr (reverse (car lista)))) (list (cdr (car (reverse (car lista))))))) (prikaziTablu (cdr lista)))))
+        (T (append (vratiRed lista p) (prikaziTablu (brisiIzSvakogReda lista p) brojac (1+ p))))
 
     )
 )
 
 (defun brisiRed(lista brojac)
     (cond
-        ((= brojac 0) lista)
-        (t (reverse (append (list (cdar lista)) (reverse (brisiRed (cdr lista) (1- brojac))))))
+        ;((null (car lista)) (reverse (cdr lista)))
+        ((= brojac 0) (reverse lista))
+        (t (remove nil (reverse (append (list (cdar lista)) (reverse (brisiRed (cdr lista) (1- brojac)))))))
     )
 )
 
@@ -136,13 +139,13 @@
     )
 )
 
-(novaIgra 4 4)
+;(novaIgra 4 4)
 (setq tablaa '(((25 41 53 61) (13 26 42 54) (5 14 27 43) (1 6 15 28)) 
                ((29 44 55 62) (16 30 45 56) (7 17 31 46) (2 8 18 32)) 
                ((33 47 57 63) (19 34 48 58) (9 20 35 49) (3 10 21 36))
                ((37 50 59 64) (22 38 51 60) (11 23 39 52) (4 12 24 40))))
-
-; (print (caar (cdddar tablaa)))
+(trace prikaziTablu)
+(print (prikaziTablu tablaa 4))
 
 ;(trace vratielemente)
 ;(print (vratielemente (reverse '((25 41 53 61) (13 26 42 54) (5 14 27 43) (1 6 15 28))) '2))
@@ -150,12 +153,16 @@
                  ; ((29 44 55 62) (16 30 45 56) (7 17 31 46) (2 8 18 32)) 
                  ; ((33 47 57 63) (19 34 48 58) (9 20 35 49) (3 10 21 36))
                  ; ((37 50 59 64) (22 38 51 60) (11 23 39 52) (4 12 24 40))) '2))
-;(print (brisiRed '((25 41 53 61) (13 26 42 54) (5 14 27 43) (1 6 15 28)) '3))
-(print (brisiIzSvakogReda '(((25 41 53 61) (13 26 42 54) (5 14 27 43) (1 6 15 28)) 
-               ((29 44 55 62) (16 30 45 56) (7 17 31 46) (2 8 18 32)) 
-               ((33 47 57 63) (19 34 48 58) (9 20 35 49) (3 10 21 36))
-               ((37 50 59 64) (22 38 51 60) (11 23 39 52) (4 12 24 40))) '3))
+;; (print (brisiRed (reverse'((25 41 53 61) (13 26 42 54) (5 14 27 43) (1 6 15 28))) '2))
+;; (print (brisiIzSvakogReda '(((25 41 53 61) (13 26 42 54) (5 14 27 43) (1 6 15 28)) 
+;;                ((29 44 55 62) (16 30 45 56) (7 17 31 46) (2 8 18 32)) 
+;;                ((33 47 57 63) (19 34 48 58) (9 20 35 49) (3 10 21 36))
+;;                ((37 50 59 64) (22 38 51 60) (11 23 39 52) (4 12 24 40))) '4))
 ;(print (potezValidan '1))
+
+;; (print (vratielemente '(((25 41 53 61) (13 26 42 54) (5 14 27 43) (1 6 15 28))) '1))
+;; (print (brisiIzSvakogReda '((25 41 53 61) (13 26 42 54) (5 14 27 43) (1 6 15 28)) '1))
+;; (print (vratiRed '(((25 41 53 61) (13 26 42 54) (5 14 27 43) (6 15 28))) '2))
 
 
 
