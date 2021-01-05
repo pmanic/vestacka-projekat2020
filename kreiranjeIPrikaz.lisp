@@ -1,4 +1,5 @@
 (setf tabla '())
+(setf odigranPotez '())
 (setf brojevi '((0 0) (1 1) (2 2) (3 3) (4 4) (5 5) (6 6) (7 7) (8 8) (9 9) (A 10) (B 11) (C 12) (D 13) (E 14) (F 15)))
 
 ;----------------------------------------------------------------------------------------------------------------------------------------
@@ -47,6 +48,7 @@
     (prikaziSlova slova)
     (stampa (prikaziTablu tabla n) n)
     (prikaziSlova slova)
+    (potez)
 )
 
 ;----------------------------------------------------------------------------------------------------------------------------------------
@@ -218,7 +220,7 @@
 (defun nadjiStapic (vrsta brojac)
     (cond
     ((null vrsta) '())
-    ((= brojac 0) (cons ( ubaciNaStapic (car vrsta) '()) ( nadjiStapic (cdr vrsta) (1- brojac)) ) )
+    ((= brojac 0) (cons (reverse ( ubaciNaStapic (reverse (car vrsta)) '())) ( nadjiStapic (cdr vrsta) (1- brojac)) ) )
     ( T (cons (car vrsta) (nadjiStapic (cdr vrsta) (1- brojac)) ))
     )
 )
@@ -246,6 +248,62 @@
     )
 )
 
+(defun vratiSledecuFiguru ()
+    (cond
+        ((eq napotezu 'X) 'O)
+        ( T 'X)
+    )
+)
+
+(defun ovdeIdeFunkcijaZaPrebrojavanjeIStampanjeKoJePobedio()
+    ;prebrojavanje i poredjenje ovde
+    (print "NA PRIMER: IGRAC X JE POBEDIO")
+)
+
+(defun odigrajIPrikazi ()
+    (setq tabla (povuciPotez odigranPotez))
+    (prikaziSlova slova)
+    (stampa (prikaziTablu tabla dimTable) dimTable)
+    (prikaziSlova slova)
+    (setq brojacPoteza (1+ brojacPoteza))
+    (setq napotezu (vratiSledecuFiguru))
+    (cond 
+    ;OVDE SE POZIVA FUNKCIJA ZA PREBROJAVANJE SPOJENIH FIGURA I ODREDJUJE KO JE POBEDIO
+        ((krajIgre) (ovdeIdeFunkcijaZaPrebrojavanjeIStampanjeKoJePobedio))
+        (T (potez))
+    )
+    
+)
+
+(defun nevalidanPotez ()
+    (print "Nevalidan potez!")
+    (potez)
+)
+
+(defun potez ()
+    (setq odigranPotez (read))
+    (cond
+        ((potezValidan odigranPotez) (odigrajIPrikazi))
+        (T (nevalidanPotez ))
+    )
+)
+
+
+
+(defun sviMoguciPotezi (globalSlova)
+    (cond
+        ((null globalSlova ) '())
+        (T (cons (cond
+            ((potezValidan (car (car globalSlova))) (povuciPotez (car (car globalSlova))))
+            ( T '())
+        ) (sviMoguciPotezi (cdr globalSlova)) ))
+    )
+)
+
+(defun sviMoguciPoteziBezNil ()
+    (remove nil (sviMoguciPotezi brojevi))
+)
+
 ;----------------------------------------------------------------------------------------------------------------------------------------
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -264,6 +322,12 @@
 ;(stampa (prikaziTablu tablaa 4) 4)
 
 (novaIgra '4 'O)
+
+;(setq tabla '(((- - O X) (X O X O) (- - - O) (- - - -)) ((- - - X) (- - - -) (- - - -) (- - - -)) ((- - - -) (- - - -) (- - - -) (- - - -))
+ ;((- - - X) (- - - -) (- - - -) (- - - O))))
+;(print (sviMoguciPoteziBezNil))
+
+
 ;; (princ tabla)
 ;; (setq tabla (povuciPotez '(0 0)))
 ;; (princ tabla)
