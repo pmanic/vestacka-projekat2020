@@ -147,9 +147,48 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;--------------------------------------------------------KRAJ IGRE I POTEZI--------------------------------------------------------------
 
-(defun krajIgre ()
-    (eq brojacPoteza '64)
+;; (defun krajIgre (brojacPoteza lista)
+;;     (cond
+;;         ((= brojacPoteza 64)(proveriPobednika(lista)))
+;;     )
+;; )
+(defun Pobednik(lista)
+    (if (> (xILIo (proveriPobednika lista) 'X) (xILIo (proveriPobednika lista) 'O)) (format t "Pobednik je X!") (format t "Pobednik je O!"))
+) 
+
+(defun xILIo(lista element)
+    (cond 
+        ((null lista) 0)
+        (t (if (equalp (car lista) element) (1+ (xILIo (cdr lista) element)) (xILIo (cdr lista) element)))
+    )
 )
+
+(defun proveriPobednika(lista)
+    (append (append (proveriZaKolone lista) (proveriZaKolone lista)) (proveriZaKolone lista))
+)
+;; (trace proveriPobedika)
+
+(defun proveriZaKolone(lista)
+    (cond
+        ((null lista) '())
+        (t (remove nil (append (proveriZaKolonePomocna(car lista)) (proveriZaKolone(cdr lista)))))
+    )
+)
+
+(defun proveriZaKolonePomocna(lista)
+    (cond
+        ((null lista) '())
+        (t (cons (proveriJednakostListe(car lista)(caar lista)) (proveriZaKolonePomocna(cdr lista))))
+    )
+)
+
+(defun proveriJednakostListe(lista element)
+    (cond 
+        ((null lista) element)
+        ((equalp (car lista) element) (proveriJednakostListe (cdr lista) element))
+    )
+)
+
 
 (defun nadjiJedanRed (brReda matrica)
     (cond
@@ -223,11 +262,11 @@
     )
 )
 
-(defun nadjiVrstu (tabela brojacX brojacY)
+(defun nadjiVrstu (tabela listaX brojacY)
      (cond
     ((null tabela) '())
-    ((= brojacX 0) (cons ( nadjiStapic (car tabela) brojacY) ( nadjiVrstu (cdr tabela) (1- brojacX) brojacY) ) )
-    ( T (cons (car tabela) (nadjiVrstu (cdr tabela) (1- brojacX) brojacY) ))
+    ((= listaX 0) (cons ( nadjiStapic (car tabela) brojacY) ( nadjiVrstu (cdr tabela) (1- listaX) brojacY) ) )
+    ( T (cons (car tabela) (nadjiVrstu (cdr tabela) (1- listaX) brojacY) ))
     )
 )
 
@@ -253,17 +292,26 @@
 ;----------------------------------------------------------POZIV FUNKCIJA----------------------------------------------------------------
 
 ;(novaIgra 4 4)
-(setq tablaa '(((25 41 53 61) (13 26 42 54) (5 14 27 43) (1 6 15 28)) 
-               ((29 44 55 62) (16 30 45 56) (7 17 31 46) (2 8 18 32)) 
-               ((33 47 57 63) (19 34 48 58) (9 20 35 49) (3 10 21 36))
-               ((37 50 59 64) (22 38 51 60) (11 23 39 52) (4 12 24 40))))
+;; (setq tablaa '(((25 41 53 61) (13 26 42 54) (5 14 27 43) (1 6 15 28)) 
+;;                ((29 44 55 62) (16 30 45 56) (7 17 31 46) (2 8 18 32)) 
+;;                ((33 47 57 63) (19 34 48 58) (9 20 35 49) (3 10 21 36))
+;;                ((37 50 59 64) (22 38 51 60) (11 23 39 52) (4 12 24 40))))
+(setq tablaa '(((X X X X) (X X X X) (O O O O) (O O O O)) 
+               ((- - X -) (- - x -) (O O O O) (- -x - -)) 
+               ((- - x -) (- O - -) (O O O O) (- - X -))
+               ((- - x- -) (- -x - -) (- x- - -) (- O - -))))
+
+;(trace preurediZaRedPomocna)
+;(print (preurediZaRed tablaa))
+(Pobednik tablaa)
+
 ;(trace prikaziTablu)
 ;(print (prikaziTablu tablaa 4))
 ;(print (potezValidan '1))
 ;(trace stampaj_listu)
 ;(stampa (prikaziTablu tablaa 4) 4)
 
-(novaIgra '4 'O)
+;(novaIgra '4 'O)
 ;; (princ tabla)
 ;; (setq tabla (povuciPotez '(0 0)))
 ;; (princ tabla)
@@ -276,6 +324,9 @@
 ;; (princ tabla)
 ;; (setq tabla (povuciPotez 'C))
 ;; (princ tabla)
+
+;; (trace daLiSu)
+;; (print (daLiSu '(o o o x) 'o))
 
 
 
