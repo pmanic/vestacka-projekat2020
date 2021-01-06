@@ -46,7 +46,7 @@
     (setq tabla (kreirajTablu '- n n)) 
     (setq slova '((0 1 2 3)(4 5 6 7)(8 9 A B)(C D E F)))
     (prikaziSlova slova)
-    (stampa (prikaziTablu tabla n) n)
+    (stampa (sortirajTablu tabla n) n)
     (prikaziSlova slova)
     (potez)
 )
@@ -72,20 +72,16 @@
     )
 )
 
-(defun prikaziTablu(lista brojac &optional(p 1))
+(defun sortirajTablu(lista brojac &optional(p 1))
     (cond
         ((= brojac 0) '())
-        ((= p brojac) (append  (list (vratiRed lista p)) (prikaziTablu (brisiIzSvakogReda lista p) (1- brojac) (1- p))))
-        ; (T (cons (caar (cdddar lista))(prikaziTablu (cdr lista))))
-        ;(T (cons (append (list (append  (reverse (cdr (reverse (car lista)))) (list (cdr (car (reverse (car lista))))))) (prikaziTablu (cdr lista)))))
-        (T (append (list (vratiRed lista p)) (prikaziTablu (brisiIzSvakogReda lista p) brojac (1+ p))))
-
+        ((= p brojac) (append  (list (vratiRed lista p)) (sortirajTablu (brisiIzSvakogReda lista p) (1- brojac) (1- p))))
+        (T (append (list (vratiRed lista p)) (sortirajTablu (brisiIzSvakogReda lista p) brojac (1+ p))))
     )
 )
 
 (defun brisiRed(lista brojac)
     (cond
-        ;((null (car lista)) (reverse (cdr lista)))
         ((= brojac 0) (reverse lista))
         (t (remove nil (reverse (append (list (cdar lista)) (reverse (brisiRed (cdr lista) (1- brojac)))))))
     )
@@ -300,7 +296,7 @@
 (defun odigrajIPrikazi ()
     (setq tabla (povuciPotez odigranPotez))
     (prikaziSlova slova)
-    (stampa (prikaziTablu tabla dimTable) dimTable)
+    (stampa (sortirajTablu tabla dimTable) dimTable)
     (prikaziSlova slova)
     (setq brojacPoteza (1+ brojacPoteza))
     (setq napotezu (vratiSledecuFiguru))
@@ -345,10 +341,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;----------------------------------------------------------POZIV FUNKCIJA----------------------------------------------------------------
 
-;; (setq tablaa '(((25 41 53 61) (13 26 42 54) (5 14 27 43) (1 6 15 28)) 
-;;                ((29 44 55 62) (16 30 45 56) (7 17 31 46) (2 8 18 32)) 
-;;                ((33 47 57 63) (19 34 48 58) (9 20 35 49) (3 10 21 36))
-;;                ((37 50 59 64) (22 38 51 60) (11 23 39 52) (4 12 24 40))))
+;;(setq tablaa '(((25 41 53 61) (13 26 42 54) (5 14 27 43) (1 6 15 28)) ))
 
 ;; (setq tablaa '(((X X X X) (X X X X) (O O O O) (O O O O)) 
 ;;                ((- - X -) (- - x -) (O O O O) (- -x - -)) 
@@ -358,7 +351,7 @@
 ;(setq tabla '(((- - O X) (X O X O) (- - - O) (- - - -)) ((- - - X) (- - - -) (- - - -) (- - - -)) ((- - - -) (- - - -) (- - - -) (- - - -))
  ;((- - - X) (- - - -) (- - - -) (- - - O))))
 
- (novaIgra '4 'O)
+ ;(novaIgra '4 'O)
 
 
 
