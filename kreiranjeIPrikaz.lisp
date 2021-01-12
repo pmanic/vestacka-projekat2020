@@ -335,6 +335,33 @@
     (remove nil (sviMoguciPotezi brojevi))
 )
 
+;******************************************************************************************
+;**********************************MIN-MAX, ALFA-BETA*************************************
+;******************************************************************************************
+
+(setq stanja '((A (B C D)) (B (E F)) (C (G H)) (D (I J)) (E (K L)) (F (M N)) (G (O)) (H (P Q)) (I (R S)) (J (T U))  ))
+(setq res '((A 2)(B 2)(C 2)(D 2)(E 2)(F 2)(G 2)(H 2)(I 2)(J 2) (K 2)  (L 3) (M 5) (N 9) (O 0) (P 7) (Q 4) (R 2) (S 1) (T 5) (U 6)      ))
+
+(defun alfabeta (stanje graf alfa beta dubina maxdub rezultat minmax)  ;minmax- true=max; false = min
+    (cond ((= dubina maxdub) (unless rezultat (cadr (assoc stanje res))))
+     (t 
+        (let ((sledbenici (cadr (assoc stanje graf)))
+               (quit NIL)
+               (best-move NIL)
+               (new-value NIL) )
+        (cond ((null sledbenici) (unless rezultat (cadr (assoc stanje res))))
+              (t 
+                (loop for sled in sledbenici until quit
+                do (setq new-value (alfabeta sled graf alfa beta (1+ dubina) maxdub NIL (not minmax)))
+                    (if minmax (when (> new-value alfa)
+                               (setq alfa new-value)
+                               (setq best-move sled))
+                            (when (< new-value beta)
+                               (setq beta new-value)
+                               (setq best-move sled)))
+                     (when (>= alfa beta) (setq quit t)))
+                    (if  rezultat best-move (if minmax alfa beta))))))))
+
 ;----------------------------------------------------------------------------------------------------------------------------------------
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -354,6 +381,6 @@
  ;(novaIgra '4 'O)
 
 
-
+(print (alfabeta 'A stanja -10000 10000 0 3 t t))
 
 
