@@ -147,7 +147,7 @@
 
 (defun krajIgre ()
     (cond
-        ((= brojacPoteza 64)(Pobednik(tabla)))
+        ((= brojacPoteza 64)(Pobednik tabla))
     )
 )
 
@@ -163,7 +163,7 @@
 )
 
 (defun proveriPobednika(lista)
-    (append (append (proveriZaKolone lista) (proveriZaKolone lista)) (proveriZaKolone lista))
+    (append (append (proveriZaKolone lista) (proveriZaKolone lista)) (proveriZaKolone lista)) ;ovde se ubacuju funkcije
 )
 
 (defun proveriZaKolone(lista)
@@ -378,9 +378,16 @@
 ;(setq tabla '(((- - O X) (X O X O) (- - - O) (- - - -)) ((- - - X) (- - - -) (- - - -) (- - - -)) ((- - - -) (- - - -) (- - - -) (- - - -))
  ;((- - - X) (- - - -) (- - - -) (- - - O))))
 
- ;(novaIgra '4 'O)
+ (novaIgra '4 'O)
+
+;; (setq tablaa '(((25 41 53 61) (13 26 42 54) (5 14 27 43) (1 6 15 28)) 
+;;                ((29 44 55 62) (16 30 45 56) (7 17 31 46) (2 8 18 32)) 
+;;                ((33 47 57 63) (19 34 48 58) (9 20 35 49) (3 10 21 36))
+;;                ((37 50 59 64) (22 38 51 60) (11 23 39 52) (4 12 24 40))))
 
 
-(print (alfabeta 'A stanja -10000 10000 0 3 t t))
+;;(print (alfabeta 'A stanja -10000 10000 0 3 t t))
+
+
 
 
