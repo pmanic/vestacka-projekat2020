@@ -48,6 +48,7 @@
     (prikaziSlova slova)
     (stampa (sortirajTablu tabla n) n)
     (prikaziSlova slova)
+    ;(princ (sviMoguciPotezi brojevi))
     (potez)
 )
 
@@ -217,7 +218,10 @@
 )
 
 (defun proveriPotezAtom (potez)
-    (proveriValidan (nadjiJedanRed  (- (izvuciBroj(assoc potez brojevi)) (* (floor (izvuciBroj(assoc potez brojevi)) dimTable) dimTable) ) (nadjiJedanRed (floor (izvuciBroj(assoc potez brojevi)) dimTable) tabla)) )
+    (proveriValidan 
+    (nadjiJedanRed  
+    (- (izvuciBroj(assoc potez brojevi)) (* (floor (izvuciBroj(assoc potez brojevi)) dimTable) dimTable) ) 
+    (nadjiJedanRed (floor (izvuciBroj(assoc potez brojevi)) dimTable) tabla)) )
 )
 
 (defun proveriPotezLista (lista)
@@ -295,11 +299,6 @@
     )
 )
 
-(defun ovdeIdeFunkcijaZaPrebrojavanjeIStampanjeKoJePobedio()
-    ;prebrojavanje i poredjenje ovde
-    (print "NA PRIMER: IGRAC X JE POBEDIO")
-)
-
 (defun odigrajIPrikazi ()
     (setq tabla (povuciPotez odigranPotez))
     (prikaziSlova slova)
@@ -307,11 +306,6 @@
     (prikaziSlova slova)
     (setq brojacPoteza (1+ brojacPoteza))
     (setq napotezu (vratiSledecuFiguru))
-    (cond 
-    ;OVDE SE POZIVA FUNKCIJA ZA PREBROJAVANJE SPOJENIH FIGURA I ODREDJUJE KO JE POBEDIO
-        ((krajIgre) (ovdeIdeFunkcijaZaPrebrojavanjeIStampanjeKoJePobedio))
-        (T (potez))
-    )
     
 )
 
