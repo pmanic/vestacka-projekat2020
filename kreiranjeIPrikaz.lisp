@@ -306,6 +306,10 @@
     (prikaziSlova slova)
     (setq brojacPoteza (1+ brojacPoteza))
     (setq napotezu (vratiSledecuFiguru))
+    (cond 
+        ((krajIgre))
+        (T (potez))
+    )
     
 )
 
